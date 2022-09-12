@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostsApiController extends Controller
 {
@@ -13,18 +14,22 @@ class PostsApiController extends Controller
 	}
 
     // store news
-    public function store() {
-		request()->validate([
-            'title' => 'required',
-            'content' => 'required',
-            'source' => 'required'
+    public function store(Request $request) {
+
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
-    
-        return Post::create([
-        'title' => request('title'),
-        'content' => request('content'),
-        'source' => request('source')
+        $image_path = $request->file('image')->store('image', 'public');
+
+
+        $success = $data = Post::create([
+            'title' => request('title'),
+            'content' => request('content'),
+            'source' => request('source'),
+            'image' => $image_path
         ]);
+
+        return response($success, Response::HTTP_CREATED);
 	}
 
     // update news
@@ -32,13 +37,15 @@ class PostsApiController extends Controller
 		request()->validate([
             'title' => 'required',
             'content' => 'required',
-            'source' => 'required'
+            'source' => 'required',
+            'image' => 'required'
             ]);
         
             $success = $post->update([
                 'title'=> request('title'),
                 'content'=> request('content'),
-                'source'=> request('source')
+                'source'=> request('source'),
+                'image' => request('image')
             ]);
         
             return [
