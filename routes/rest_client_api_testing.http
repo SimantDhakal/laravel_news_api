@@ -1,0 +1,27 @@
+
+GET http://127.0.0.1:8000/api/posts HTTP/1.1
+
+###
+
+POST http://127.0.0.1:8000/api/posts HTTP/1.1
+Content-Type: application/json
+
+{
+	"title": "My third title",
+	"content": "My third content",
+    "source": "Akash Gautam"
+}
+
+###
+PUT http://127.0.0.1:8000/api/posts/3
+Content-Type: application/json
+	
+{
+	"title": "Loperum Isum",
+	"content": "This is a dummy data",
+    "source": "Superman"
+}
+
+###
+
+DELETE http://127.0.0.1:8000/api/posts/2
